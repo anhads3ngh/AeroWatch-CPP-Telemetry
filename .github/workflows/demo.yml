@@ -18,8 +18,11 @@ jobs:
       - uses: actions/checkout@v4
       - name: Install Pillow
         run: python3 -m pip install --user Pillow
-      - name: Check video encoder
-        run: ffmpeg -hide_banner -version | head -n 1
+      - name: Install video encoder
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y ffmpeg
+          ffmpeg -hide_banner -version | head -n 1
       - name: Build C++ simulator
         run: |
           cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
