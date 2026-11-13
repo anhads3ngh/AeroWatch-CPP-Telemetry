@@ -4,6 +4,18 @@ A cross-platform, **C++17** offline simulator for generating, validating, replay
 
 **Safety and scope:** Educational simulator only. Does not connect to, command, or operate any vehicle; does not implement MAVLink or STANAG 4586. All telemetry is synthetic.
 
+## 🎬 Working demo
+
+[![AeroWatch C++ telemetry simulator — animated demonstration](media/demo.gif)](media/demo.mp4)
+
+**[▶ Watch the 16-second video demo (MP4)](media/demo.mp4)** · [View the animated GIF](media/demo.gif)
+
+This demo shows a visual playback of **actual compiled C++ program output**, including 20 passing tests, 22 accepted synthetic telemetry records, two safely rejected faults, and NOMINAL → WARNING → CRITICAL health transitions.
+
+The styled terminal and telemetry panels are a presentation overlay on real CLI data, **not a GUI built into the C++ application**. The demonstration is offline and does not communicate with any vehicles.
+
+To regenerate the video and GIF locally: build the project and run all tests, install Python Pillow and FFmpeg, then run `python3 scripts/render_demo.py`. The repository's **Publish project demo** GitHub Actions workflow also regenerates the files automatically.
+
 ## Features
 
 - Simulated telemetry for two independent vehicles
