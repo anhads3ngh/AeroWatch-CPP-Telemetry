@@ -132,7 +132,7 @@ def frame(seconds, test_count, telemetry_rows, failures, summary, dest):
 def main():
     OUT.mkdir(parents=True,exist_ok=True)
     ctest = run(["ctest","--test-dir",str(ROOT/"build"),"-C","Release","--output-on-failure"]).stdout
-    found = re.search(r"100% tests passed, 0 tests failed out of (\d+)",ctest)
+    found = re.search(r"100% tests passed(?:, 0 tests failed)? out of (\d+)",ctest)
     if not found: raise RuntimeError("Tests did not pass; refusing to publish demo")
     sample = run([str(ROOT/"build"/"aerowatch"),"--samples","24","--faults"])
     rows = [line for line in sample.stdout.splitlines()
