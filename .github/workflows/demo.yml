@@ -1,0 +1,39 @@
+name: Publish project demo
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/render_demo.py"
+      - ".github/workflows/demo.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  render-and-publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Pillow
+        run: python3 -m pip install --user Pillow
+      - name: Check video encoder
+        run: ffmpeg -hide_banner -version | head -n 1
+      - name: Build C++ simulator
+        run: |
+          cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+          cmake --build build --config Release --parallel
+      - name: Run C++ tests
+        run: ctest --test-dir build -C Release --output-on-failure
+      - name: Render MP4 video and GIF preview
+        run: python3 scripts/render_demo.py
+      - name: Commit generated demo media
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add media/demo.mp4 media/demo.gif
+          if ! git diff --cached --quiet; then
+            git commit -m "Publish video and animated README demo [skip ci]"
+            git push origin HEAD:main
+          fi
